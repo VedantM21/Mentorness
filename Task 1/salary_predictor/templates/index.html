@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input, .select {
+            border: none;
+            padding: 1rem;
+            border-radius: 1rem;
+            background: #e8e8e8;
+            box-shadow: 20px 20px 60px #c5c5c5, -20px -20px 60px #ffffff;
+            transition: 0.3s;
+            margin: 10px 0;
+            width: calc(100% - 2rem);
+        }
+
+        .input:focus, .select:focus {
+            outline-color: #e8e8e8;
+            background: #e8e8e8;
+            box-shadow: inset 20px 20px 60px #c5c5c5, inset -20px -20px 60px #ffffff;
+            transition: 0.3s;
+        }
+
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Salary Prediction</h1>
+        <form id="predict-form">
+            <label for="sex">Sex:</label>
+            <select id="sex" name="SEX" class="select">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select><br>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="AGE" class="input" placeholder="Input Age"><br>
+
+            <label for="past-exp">Past Experience (Years):</label>
+            <input type="number" id="past-exp" name="PAST EXP" class="input" placeholder="Input Past Experience"><br>
+
+            <label for="leaves-used">Leaves Used:</label>
+            <input type="number" id="leaves-used" name="LEAVES USED" class="input" ><br>
+
+            <label for="leaves-remaining">Leaves Remaining:</label>
+            <input type="number" id="leaves-remaining" name="LEAVES REMAINING" class="input"><br>
+
+            <label for="ratings">Ratings:</label>
+            <input type="number" step="0.1" id="ratings" name="RATINGS" class="input"><br>
+
+            <label for="years-in-company">Years in Company:</label>
+            <input type="number" step="0.1" id="years-in-company" name="YEARS IN COMPANY" class="input"><br>
+
+            <label for="designation">Designation:</label>
+            <input type="text" id="designation" name="DESIGNATION" class="input" placeholder="Type here..."><br>
+
+            <label for="unit">Unit:</label>
+            <input type="text" id="unit" name="UNIT" class="input" placeholder="Type here..."><br>
+
+            <button type="submit">Predict</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('predict-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const data = {
+                'SEX': document.getElementById('sex').value,
+                'AGE': Number(document.getElementById('age').value),
+                'PAST EXP': Number(document.getElementById('past-exp').value),
+                'LEAVES USED': Number(document.getElementById('leaves-used').value),
+                'LEAVES REMAINING': Number(document.getElementById('leaves-remaining').value),
+                'RATINGS': Number(document.getElementById('ratings').value),
+                'YEARS IN COMPANY': Number(document.getElementById('years-in-company').value),
+                'DESIGNATION': document.getElementById('designation').value,
+                'UNIT': document.getElementById('unit').value
+            };
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result.error) {
+                document.getElementById('result').innerText = `Error: ${result.error}`;
+            } else {
+                document.getElementById('result').innerText = `Predicted Salary: ${result.result}`;
+            }
+        };
+    </script>
+</body>
+</html>
