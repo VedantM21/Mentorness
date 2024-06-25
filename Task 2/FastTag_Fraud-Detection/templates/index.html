@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Fraud Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white flex items-center justify-center min-h-screen">
+    <div class="absolute left-10 top-1/2 transform -translate-y-1/2">
+        <img src="{{ url_for('static', filename='car1.jpg') }}" class="w-80 h-80 object-cover">
+    </div>
+
+    <div class="absolute right-10 top-1/2 transform -translate-y-1/2">
+        <img src="{{ url_for('static', filename='truck1.jpg') }}" class="w-80 h-80 object-cover">
+    </div>
+    
+    <div class="absolute top-1/2 transform -translate-y-1/2">
+        <img src="{{ url_for('static', filename='FastTag.jpg') }}" class="w-80 h-80 object-cover">
+    </div>
+
+    <div class="relative bg-gray-800 text-white p-8 rounded-lg shadow-lg w-full max-w-md flex flex-col items-center">
+        <h1 class="text-2xl font-bold mb-6 text-center">Transaction Fraud Prediction</h1>
+
+        <form action="/predict" method="post" class="space-y-4 w-full flex flex-col items-center">
+            <div class="w-full">
+                <label for="timestamp" class="block text-gray-300 text-center">Select Date and Time:</label>
+                <input type="datetime-local" id="timestamp" name="Timestamp" class="mt-1 block w-full p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            </div>
+
+            <div class="w-full">
+                <label for="transaction_amount" class="block text-gray-300 text-center">Transaction Amount:</label>
+                <input type="text" id="transaction_amount" name="Transaction_Amount" class="mt-1 block w-full p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            </div>
+
+            <div class="w-full">
+                <label for="amount_paid" class="block text-gray-300 text-center">Amount Paid:</label>
+                <input type="text" id="amount_paid" name="Amount_paid" class="mt-1 block w-full p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            </div>
+
+            <div class="w-full">
+                <label for="vehicle_speed" class="block text-gray-300 text-center">Vehicle Speed:</label>
+                <input type="text" id="vehicle_speed" name="Vehicle_Speed" class="mt-1 block w-full p-2 border border-gray-600 rounded bg-gray-700 text-white">
+            </div>
+
+            <div class="w-full">
+                <label for="vehicle_type" class="block text-gray-300 text-center">Vehicle Type:</label>
+                <select id="vehicle_type" name="Vehicle_Type" class="mt-1 block w-full p-2 border border-gray-600 rounded bg-gray-700 text-white">
+                    <option value="Car">Car</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Motorcycle">Bus</option>
+                </select>
+            </div>
+
+            <div class="text-center w-full">
+                <input type="submit" value="Submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 w-full">
+            </div>
+        </form>
+
+        {% if prediction is not none %}
+        <div class="mt-6 p-4 bg-gray-100 rounded-lg text-center w-full">
+            <h2 class="text-xl font-semibold text-gray-800">Prediction Result:</h2>
+            <p class="text-lg text-gray-800">{{ prediction }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
